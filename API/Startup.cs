@@ -48,6 +48,11 @@ namespace API
 
             app.UseRouting();
 
+            app.UseCors(policy =>
+            {
+                policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200");
+            });
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
