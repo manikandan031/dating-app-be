@@ -8,22 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]s")]
-    public class AppUserController : ControllerBase
+    public class AppUserController : ApiBaseController
     {
-        private readonly DataContext _dataContext;
-
-        public AppUserController(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
+        public AppUserController(DataContext dataContext) : base(dataContext) { }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             Console.WriteLine("Inside Get All Users");
-            return await _dataContext.Users.ToListAsync();
+            return await DataContext.Users.ToListAsync();
         }
 
         [HttpGet]
@@ -31,7 +24,7 @@ namespace API.Controllers
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             Console.WriteLine("Inside Get User by id - {0}", id);
-            return await _dataContext.Users.FindAsync(id);
+            return await DataContext.Users.FindAsync(id);
         }
     }
 }
