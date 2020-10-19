@@ -38,5 +38,21 @@ namespace API.Controllers
             
             return newUser;
         }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        {
+            var user = await DataContext.Users.FirstOrDefaultAsync(x =>
+                x.Name.ToLower().Equals(loginDto.Name.ToLower()) &&
+                x.Password.Equals(loginDto.Password));
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid user");
+            }
+
+            return user;
+        }
     }
 }
