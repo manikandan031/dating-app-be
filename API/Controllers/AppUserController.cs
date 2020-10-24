@@ -14,7 +14,7 @@ namespace API.Controllers
         public AppUserController(DataContext dataContext) : base(dataContext) { }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             Console.WriteLine("Inside Get All Users");
