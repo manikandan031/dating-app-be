@@ -1,24 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.data;
 using API.entities;
+using API.repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     public class AppUserController : ApiBaseController
     {
-        public AppUserController(DataContext dataContext) : base(dataContext) { }
+        private readonly UserRepository _userRepository;
+
+        public AppUserController(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             Console.WriteLine("Inside Get All Users");
-            return await DataContext.Users.ToListAsync();
+            return new ActionResult<IEnumerable<AppUser>>(await _userRepository.GetAllUsers());
         }
 
         [HttpGet]
@@ -27,7 +31,7 @@ namespace API.Controllers
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             Console.WriteLine("Inside Get User by id - {0}", id);
-            return await DataContext.Users.FindAsync(id);
+            return await _userRepository.GetUser(id);
         }
     }
 }
